@@ -15,6 +15,7 @@ class BomController extends Controller
     public function index()
     {
         //
+        return view('bom.index');
     }
 
     /**

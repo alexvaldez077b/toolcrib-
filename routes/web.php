@@ -21,6 +21,17 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 
 Route::get('/customers', 'CustomerController@index')->name('customers');
-Route::get('/customers/update', 'CustomerController@update')->name('customerUpdate');
+Route::get('/customers/update/{id}', 'CustomerController@update')->name('customerUpdate');
+Route::post('/customers/update/', 'CustomerController@edit')->name('customer_Update');
+
+Route::get('/model/{id}', 'CustomerModelController@index')->name('customer_models');
+Route::get('/model/{customerId}/{id}', 'CustomerModelController@update')->name('modelUpdate');
+Route::post('/model/update/', 'CustomerModelController@edit')->name('model_Update');
+
+
+Route::get('/bom/{id}', 'BomController@index')->name('model_bom');
+
+Route::get('/items', 'ItemController@index')->name('items');
+Route::get('/items/update', 'ItemController@update')->name('itemUpdate');
 
 

@@ -14,7 +14,8 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        return view('customers.index');
+        $customers = Customer::All();
+        return view('customers.index')->with('items',$customers);
     }
 
     /**
@@ -55,9 +56,18 @@ class CustomerController extends Controller
      * @param  \App\Customer  $customer
      * @return \Illuminate\Http\Response
      */
-    public function edit(Customer $customer)
+    public function edit(Customer $customer, Request $request )
     {
-        //
+        /*  updateOrCreate( [data],[where]);    */
+
+        if($request->id == -1)
+        {
+            Customer::create( [ 'name'=> $request->name ] );
+        }else{
+            Customer::where( ['id' => $request->id ])->update( [ 'name'=> $request->name, 'status' => $request->status ] );
+        }
+        return Redirect('customers');
+
     }
 
     /**
@@ -70,8 +80,11 @@ class CustomerController extends Controller
     public function update(Request $request, Customer $customer)
     {
         //
-
-        return view('customers.update');
+        
+        $item = Customer::where( 'id', $request->id )->first();
+        return view('customers.update')->with('customer', $item);
+        
+            
 
     }
 

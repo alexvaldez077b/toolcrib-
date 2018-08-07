@@ -22,7 +22,7 @@ class CreateItemsTable extends Migration
             $table->string('localization')->nullable();
             $table->string('pn')->nullable();
             $table->integer('stock')->default(0);
-            $table->boolean('status')->default(false);
+            $table->boolean('status')->default(false);   //////************************ */
             $table->integer('family')->default(0);
             
             $table->string('umdelivery')->nullable();

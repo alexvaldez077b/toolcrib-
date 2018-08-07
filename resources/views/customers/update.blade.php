@@ -22,14 +22,29 @@
             <h3 class="box-title">Fomr</h3>
         </div>
         <!-- /.box-header -->
+        @if( ! empty($customer))
+    
+
         <!-- form start -->
-        <form role="form">
+        <form role="form" method="post" action="{{ route('customer_Update') }}" >
             <div class="box-body">
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Name</label>
-                    <input type="text" class="form-control" name="customerName"  required>
+
+                    @csrf
+                    <label >Name</label>
+                    <input type="hidden" class="form-control" value="{{ $customer->id }}" name="id" >
+                    <input type="text" class="form-control" name="name" value="{{ $customer->name }}"  required>
                 </div>
-               
+                <div class="form-group">
+                    <label for="exampleInputFile">Status</label>
+                    <select name="status" class="form-control" >
+                        <option {{ !$customer->status?"selected":"" }} value="0">Disabled</option>
+                        <option {{ $customer->status?"selected":"" }} value="1">Enabled</option>
+                    </select>
+
+          
+                </div>
+
                 <div class="form-group">
                     <label for="exampleInputFile">Image input</label>
                     <input type="file" name="image">
@@ -43,6 +58,47 @@
                 <button type="submit" class="btn btn-primary">Submit</button>
             </div>
         </form>
+
+        //
+
+        @else
+
+        <form role="form" method="post" action="{{ route('customer_Update') }}" >
+            <div class="box-body">
+                <div class="form-group">
+
+                    @csrf
+                    <label >Name</label>
+                    <input type="hidden" class="form-control" value="-1" name="id" >
+                    <input type="text" class="form-control" name="name" value=""  required>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputFile">Status</label>
+                    <select name="status" class="form-control" >
+                        <option  value="0">Disabled</option>
+                        <option selected value="1">Enabled</option>
+                    </select>
+
+          
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleInputFile">Image input</label>
+                    <input type="file" name="image">
+
+          
+                </div>
+             </div>
+            <!-- /.box-body -->
+
+            <div class="box-footer">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+
+        @endif
+
+
     </div>
     <!-- /.box -->
 

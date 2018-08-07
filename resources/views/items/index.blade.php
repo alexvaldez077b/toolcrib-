@@ -6,7 +6,7 @@
 <ol class="breadcrumb">
     <li>
         <a href="#">
-            <i class="fa fa-dashboard"></i> Customers</a>
+            <i class="fa fa-dashboard"></i> Items</a>
     </li>
     <li class="active">Index</li>
 </ol>
@@ -60,7 +60,7 @@
         </div>
         <!-- /.box-body -->
         <div class="box-footer clearfix">
-              <button class="btn btn-success btn-flat pull-left"><i class=" fa fa-plus "></i> New Entry  </button>
+              <a href="{{ route('itemUpdate') }}" class="btn btn-success btn-flat pull-left"><i class=" fa fa-plus "></i> New Entry  </a>
               <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right"></a>
             </div>
             <!-- /.box-footer -->

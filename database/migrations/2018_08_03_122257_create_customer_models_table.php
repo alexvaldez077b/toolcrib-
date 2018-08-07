@@ -15,12 +15,16 @@ class CreateCustomerModelsTable extends Migration
     {
         Schema::create('customer_models', function (Blueprint $table) {
             $table->increments('id');
+
+            $table->unsignedInteger('customer_id');
             
             $table->string('pn')->unique();
             
             $table->string('family');
             
             $table->integer('required_quantity');
+
+            $table->boolean( 'status' )->default(true);
 
             $table->timestamps();
         });

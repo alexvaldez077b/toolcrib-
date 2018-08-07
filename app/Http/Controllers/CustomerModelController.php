@@ -12,9 +12,11 @@ class CustomerModelController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
+        $models = customerModel::where('customer_id',$request->id)->get();
+        return view('models.index')->with('items',$models)->with('customerId', $request->id);
     }
 
     /**
@@ -55,9 +57,17 @@ class CustomerModelController extends Controller
      * @param  \App\customerModel  $customerModel
      * @return \Illuminate\Http\Response
      */
-    public function edit(customerModel $customerModel)
+    public function edit(customerModel $customerModel, Request $request)
     {
         //
+
+        if($request->id == -1)
+        {
+            customerModel::create( [ 'pn'=> $request->pn, 'customer_id' => $request->customer_id ,'family' => $request->family, 'required_quantity' => $request->required_quantity ] );
+        }else{
+            customerModel::where( ['id' => $request->id ])->update( [ 'pn'=> $request->pn,'customer_id' => $request->customer_id, 'family' => $request->family, 'required_quantity' => $request->required_quantity, 'status' => $request->status ] );
+        }
+        return Redirect( )->route('customer_models', $request->customer_id) ;
     }
 
     /**
@@ -70,6 +80,8 @@ class CustomerModelController extends Controller
     public function update(Request $request, customerModel $customerModel)
     {
         //
+        $item = customerModel::where( 'id', $request->id )->first();
+        return view('models.update')->with('model', $item)->with('customerId', $request->customerId);
     }
 
     /**

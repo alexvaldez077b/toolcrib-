@@ -20,6 +20,8 @@ class CreateCustomersTable extends Migration
 
             $table->string('image')->nullable();
 
+            $table->boolean( 'status' )->default(true);
+
             $table->timestamps();
         });
     }

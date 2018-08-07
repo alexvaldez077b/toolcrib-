@@ -8,6 +8,7 @@
         <a href="#">
             <i class="fa fa-dashboard"></i> Customers</a>
     </li>
+    <li class="active">Models</li>
     <li class="active">Index</li>
 </ol>
 @stop @section('content')
@@ -26,32 +27,33 @@
             <table class="table table-bordered" id="records">
                 <thead>
                     <tr>
-                        <th>Header</th>
-                        <th>Header</th>
-                        <th>Header</th>
+                        <th>Part Number</th>
+                        <th>Family</th>
+                        <th>required quantity</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    <tr>
-                        <td>2.</td>
-                        <td>Clean database</td>
+                    @foreach($items as $row)
+                    <tr class="{{ $row->status?"":"text-danger" }}">
+                        <!-- 'customer_id', 'pn', 'family', 'required_quantity', 'status' -->
+                        <td> {{$row->pn}} </td>
+                        <td> {{$row->family}} </td>
                         <td>
-                            <!--div class="progress progress-xs">
-                                <div class="progress-bar progress-bar-yellow" style="width: 70%"></div>
-                            </div-->
+                             {{$row->required_quantity}}
                         </td>
                         <td>
                             <div class="btn-group">
-                                <a href="{{ route('customerUpdate',1) }}" type="button" class="btn btn-primary"> <i class="fa fa-edit"></i></a>
-                                <button type="button" class="btn btn-info"> <i class="fa fa-eye"></i></button>
+                                <a href="{{ route('modelUpdate',[$customerId,$row->id]) }}" type="button" class="btn btn-primary"> <i class="fa fa-edit"></i></a>
+                                <a href="{{ route('model_bom', $row->id )  }}" class="btn btn-info"> <i class="fa fa-eye"></i></a>
 
-                                <button type="button" class="btn btn-danger"> <i class="fa fa-close" ></i></button>
+                                <button type="button" class="btn btn-{{ $row->status?"success":"danger" }}"> ...</button>
                                 
                             </div>
                         </td>
                     </tr>
+                    @endforeach
                 </tbody>
 
                 
@@ -60,7 +62,7 @@
         </div>
         <!-- /.box-body -->
         <div class="box-footer clearfix">
-              <button class="btn btn-success btn-flat pull-left"><i class=" fa fa-plus "></i> New Entry  </button>
+              <a href="{{ route('modelUpdate',[$customerId,-1]) }}" " class="btn btn-success btn-flat pull-left"><i class=" fa fa-plus "></i> New Entry  </a>
               <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right"></a>
             </div>
             <!-- /.box-footer -->
