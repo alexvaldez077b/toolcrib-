@@ -21,22 +21,30 @@
         <div class="box-body">
            
 
-            <h3 class="profile-username text-center">Model PN</h3>
+            <h3 class="profile-username text-center">{{ $model->pn }}</h3>
 
-            <p class="text-muted text-center">Software Engineer</p>
+            <p class="text-muted text-center">{{ $model->family }}</p>
 
             <ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
-                    <b>Quiantity</b>
-                    <a class="pull-right">1,322</a>
+                    <b>amount required per month  </b>
+                    <a class="pull-right">{{ $model->required_quantity }}</a>
                 </li>
                 <li class="list-group-item">
-                    <b>Items List</b>
-                    <a class="pull-right">543</a>
+                    <b>amount required per week  </b>
+                    <a class="pull-right">{{ number_format( $model->required_quantity/4.3 , 2) }}</a>
                 </li>
                 <li class="list-group-item">
-                    <b>Status</b>
-                    <a class="pull-right">13,287</a>
+                    <b>amount required per day  </b>
+                    <a class="pull-right">{{ number_format( $model->required_quantity/30.4, 2) }}</a>
+                </li>
+                <li class="list-group-item">
+                    <b>number of items required</b>
+                    <a class="pull-right"></a>
+                </li>
+                <li class="list-group-item">
+                    <b>Total cost</b>
+                    <a class="pull-right"></a>
                 </li>
             </ul>
 

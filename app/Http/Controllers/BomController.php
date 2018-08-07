@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Bom;
+use App\customerModel;
+
 use Illuminate\Http\Request;
 
 class BomController extends Controller
@@ -12,10 +14,15 @@ class BomController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        return view('bom.index');
+        $model = customerModel::where('id', $request->id)->first();
+
+        $items = Bom::where('model_id', $request->id )->get();
+
+
+        return view('bom.index')->with( 'model', $model );
     }
 
     /**
