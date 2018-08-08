@@ -14,7 +14,7 @@
 @stop @section('content')
 <!--div class="row"-->
 
-<div class="col-md-3">
+<div class="col-md-2">
 
     <!-- Profile Image -->
     <div class="box box-info">
@@ -58,7 +58,7 @@
 </div>
 <!-- /.col -->
 
-<div class="col col-md-9">
+<div class="col col-md-10">
 
 
     <div class="box box-warning">
@@ -70,22 +70,34 @@
             <table class="table table-bordered" id="records">
                 <thead>
                     <tr>
-                        <th>Header</th>
-                        <th>Header</th>
-                        <th>Header</th>
+                        
+                        <th>Code</th>
+                        <th>Part Number</th>
+                        <th>Description</th>
+                        <th>Localization</th>
+                        <th>Price</th>
+                        <th>Lead Time</th>
+                        <th>used per unit</th>
+                        <th>used per week</th>
+                        <th>used per month</th>
+
+
                         <th>Actions</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     <tr>
-                        <td>2.</td>
-                        <td>Clean database</td>
-                        <td>
-                            <!--div class="progress progress-xs">
-                                <div class="progress-bar progress-bar-yellow" style="width: 70%"></div>
-                            </div-->
-                        </td>
+                        
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                         <td>
                             <div class="btn-group">
                                 <a href="{{ route('customerUpdate',1) }}" type="button" class="btn btn-primary">
