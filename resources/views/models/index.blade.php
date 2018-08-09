@@ -45,10 +45,10 @@
                         </td>
                         <td>
                             <div class="btn-group">
-                                <a href="{{ route('modelUpdate',[$customerId,$row->id]) }}" type="button" class="btn btn-primary"> <i class="fa fa-edit"></i></a>
-                                <a href="{{ route('model_bom', $row->id )  }}" class="btn btn-info"> <i class="fa fa-eye"></i></a>
+                                <a href="{{ route('modelUpdate',[$customerId,$row->id]) }}" type="button" class="btn btn-xs btn-primary"> <i class="fa fa-edit"></i></a>
+                                <a href="{{ route('model_bom', $row->id )  }}" class="btn btn-xs btn-info"> <i class="fa fa-eye"></i></a>
 
-                                <button type="button" class="btn btn-{{ $row->status?"success":"danger" }}"> ...</button>
+                                <button type="button" class="btn btn-xs btn-{{ $row->status?"success":"danger" }}"> ...</button>
                                 
                             </div>
                         </td>

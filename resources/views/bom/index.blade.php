@@ -19,7 +19,7 @@
     <!-- Profile Image -->
     <div class="box box-info">
         <div class="box-body">
-           
+
 
             <h3 class="profile-username text-center">{{ $model->pn }}</h3>
 
@@ -27,15 +27,15 @@
 
             <ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
-                    <b>amount required per month  </b>
+                    <b>amount required per month </b>
                     <a class="pull-right">{{ $model->required_quantity }}</a>
                 </li>
                 <li class="list-group-item">
-                    <b>amount required per week  </b>
+                    <b>amount required per week </b>
                     <a class="pull-right">{{ number_format( $model->required_quantity/4.3 , 2) }}</a>
                 </li>
                 <li class="list-group-item">
-                    <b>amount required per day  </b>
+                    <b>amount required per day </b>
                     <a class="pull-right">{{ number_format( $model->required_quantity/30.4, 2) }}</a>
                 </li>
                 <li class="list-group-item">
@@ -48,16 +48,67 @@
                 </li>
             </ul>
 
-           
+
         </div>
         <!-- /.box-body -->
     </div>
     <!-- /.box -->
 
-    
+
 </div>
 <!-- /.col -->
+<div class="col-md-10">
 
+    <div class="box box-success">
+        <div class="box-body">
+            <form action="">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for=""> Code </label>
+                        <select class="form-control" name="" id="items-select">
+
+                        </select>
+
+                    </div>
+                    <div class="form-group">
+                        <label for=""> Quantity for Unit </label>
+                        <input type="number" step="0.001" class="form-control">
+
+                    </div>
+                </div>
+
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <label for=""> Code: </label>
+                            <input type="text" class="form-control" disabled>
+                            <label for=""> Part Number: </label>
+                            <input type="number" class="form-control" disabled>
+                            <label for=""> Description: </label>
+                            <input type="number" class="form-control" disabled>
+                        </div>
+                        <div class="col-md-6">
+                            <label for=""> Family: </label>
+                            <input type="number" class="form-control" disabled>
+                            <label for=""> Currency: </label>
+                            <input type="text" class="form-control" disabled>
+                            <label for=""> Price: </label>
+                            <input type="text" class="form-control" disabled>
+                        </div>
+                    </div>
+                </div>
+
+
+            </form>
+        </div>
+        <div class="box-footer clearfix">
+            <button class="btn btn-primary pull-right">
+                <i class=" fa fa-plus "></i> Add </button>
+        </div>
+
+    </div>
+
+</div>
 <div class="col col-md-10">
 
 
@@ -70,7 +121,7 @@
             <table class="table table-bordered" id="records">
                 <thead>
                     <tr>
-                        
+
                         <th>Code</th>
                         <th>Part Number</th>
                         <th>Description</th>
@@ -88,7 +139,7 @@
 
                 <tbody>
                     <tr>
-                        
+
                         <td></td>
                         <td></td>
                         <td></td>
@@ -100,14 +151,14 @@
                         <td></td>
                         <td>
                             <div class="btn-group">
-                                <a href="{{ route('customerUpdate',1) }}" type="button" class="btn btn-primary">
+                                <a href="{{ route('customerUpdate',1) }}" type="button" class="btn btn-xs btn-primary">
                                     <i class="fa fa-edit"></i>
                                 </a>
-                                <button type="button" class="btn btn-info">
+                                <button type="button" class="btn btn-xs btn-info">
                                     <i class="fa fa-eye"></i>
                                 </button>
 
-                                <button type="button" class="btn btn-danger">
+                                <button type="button" class="btn btn-xs  btn-danger">
                                     <i class="fa fa-close"></i>
                                 </button>
 
@@ -139,6 +190,36 @@
 <script>
     $(document).ready(e => {
         $('#records').DataTable();
+        $('#items-select').select2({
+            ajax: {
+                url: '{{ route("itemAjax") }}',
+                
+                dataType: 'json'
+                // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+            },
+            minimumInputLength: 4,
+        });
+
+        $('#items-select').change( e=>{
+
+            $.ajax({
+                url: '{{ route("item-description") }}',
+                data: {
+                    id: $('#items-select').val()
+                },
+                method: "get",
+                success: e => {
+                    console.log(e.description);
+                },
+                error: e =>{
+                    console.log(e);
+                }
+            })
+            
+        } );
+
+        
+
     });
 
 </script>

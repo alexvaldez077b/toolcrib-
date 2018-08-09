@@ -34,4 +34,6 @@ Route::get('/bom/{id}', 'BomController@index')->name('model_bom');
 Route::get('/items', 'ItemController@index')->name('items');
 Route::get('/items/update', 'ItemController@update')->name('itemUpdate');
 
-
+Route::post('/items/uploadfile', 'ItemController@upload')->name('itemsFile');
+Route::get('/items/api', 'ItemController@filter')->name('itemAjax');
+Route::get('/items/api/description', 'ItemController@details')->name('item-description');
