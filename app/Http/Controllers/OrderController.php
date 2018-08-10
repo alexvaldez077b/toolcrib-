@@ -2,28 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Bom;
-use App\customerModel;
-use App\Item;
+use App\Order;
 use Illuminate\Http\Request;
 
-class BomController extends Controller
+class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         //
-        $model = customerModel::where('id', $request->id)->first();
-
-        $items = Bom::where('model_id', $request->id )->leftJoin('items', 'items.id', '=', 'boms.item_id') ->get();
-
-        //print_r($items);
-
-        return view('bom.index')->with( 'model', $model )->with('items' , $items);
+        return view('orders.index');
     }
 
     /**
@@ -45,23 +37,15 @@ class BomController extends Controller
     public function store(Request $request)
     {
         //
-
-        $bom = Bom::create([ 'model_id' => $request->model_id, 'item_id' => $request->item_id, 'quantity' => $request->quantity   ]);
-        $item = Item::where('id', $request->item_id)->first();
-
-        return response()->json( array( 'response' => $bom, 'data' => $item ) );
-
-
- 
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Bom  $bom
+     * @param  \App\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function show(Bom $bom)
+    public function show(Order $order)
     {
         //
     }
@@ -69,10 +53,10 @@ class BomController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Bom  $bom
+     * @param  \App\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function edit(Bom $bom)
+    public function edit(Order $order)
     {
         //
     }
@@ -81,10 +65,10 @@ class BomController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Bom  $bom
+     * @param  \App\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Bom $bom)
+    public function update(Request $request, Order $order)
     {
         //
     }
@@ -92,10 +76,10 @@ class BomController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Bom  $bom
+     * @param  \App\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Bom $bom)
+    public function destroy(Order $order)
     {
         //
     }

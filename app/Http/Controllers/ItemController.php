@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+ini_set('max_execution_time', 180); //3 minutes
 use App\Item;
 use Excel;
 use Illuminate\Http\Request;
@@ -36,9 +36,9 @@ class ItemController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $req)
     {
-        //
+        return response()->json( array( 'id' => $req->id, 'quantity' => $req->quantity ) );
     }
 
     /**

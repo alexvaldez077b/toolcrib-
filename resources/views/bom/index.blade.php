@@ -13,7 +13,7 @@
 </ol>
 @stop @section('content')
 <!--div class="row"-->
-
+<div class="row">
 <div class="col-md-2">
 
     <!-- Profile Image -->
@@ -72,7 +72,7 @@
                     </div>
                     <div class="form-group">
                         <label for=""> Quantity for Unit </label>
-                        <input type="number" step="0.001" class="form-control">
+                        <input type="number" step="0.001" id="quantity-item" class="form-control">
 
                     </div>
                 </div>
@@ -81,19 +81,19 @@
                     <div class="form-group">
                         <div class="col-md-6">
                             <label for=""> Code: </label>
-                            <input type="text" class="form-control" disabled>
+                            <input id="codeajax" class="form-control" disabled>
                             <label for=""> Part Number: </label>
-                            <input type="number" class="form-control" disabled>
+                            <input id="pnajax"  class="form-control" disabled>
                             <label for=""> Description: </label>
-                            <input type="number" class="form-control" disabled>
+                            <input id="descriptionajax" class="form-control" disabled>
                         </div>
                         <div class="col-md-6">
                             <label for=""> Family: </label>
-                            <input type="number" class="form-control" disabled>
+                            <input id="familyajax" class="form-control" disabled>
                             <label for=""> Currency: </label>
-                            <input type="text" class="form-control" disabled>
+                            <input id="currencyajax" type="text" class="form-control" disabled>
                             <label for=""> Price: </label>
-                            <input type="text" class="form-control" disabled>
+                            <input id="priceajax" type="text" class="form-control" disabled>
                         </div>
                     </div>
                 </div>
@@ -102,7 +102,7 @@
             </form>
         </div>
         <div class="box-footer clearfix">
-            <button class="btn btn-primary pull-right">
+            <button id="addItemBom" class="btn btn-primary pull-right">
                 <i class=" fa fa-plus "></i> Add </button>
         </div>
 
@@ -138,17 +138,19 @@
                 </thead>
 
                 <tbody>
+                    @foreach($items as $row)
                     <tr>
 
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>{{ $row->code }}</td>
+                        <td> {{$row->pn}} </td>
+                        <td> {{$row->description}} </td>
+                        <td> {{$row->localization}} </td>
+                        <td> {{$row->price}} </td>
+                        <td> {{$row->leadtime}} </td>
+                        <td> {{$row->quantity}} </td>
+                        
+                        <td> {{ number_format(  ($row->quantity * $model->required_quantity) / 4.34 , 2) }} </td>
+                        <td> {{ number_format(  $row->quantity * $model->required_quantity  , 2 )}} </td>
                         <td>
                             <div class="btn-group">
                                 <a href="{{ route('customerUpdate',1) }}" type="button" class="btn btn-xs btn-primary">
@@ -165,6 +167,7 @@
                             </div>
                         </td>
                     </tr>
+                    @endforeach
                 </tbody>
 
 
@@ -181,15 +184,26 @@
     </div>
     <!-- /.box -->
 </div>
+</div>
+
 
 
 
 <!--/div-->
 <!-- /.row -->
 @stop @section('js')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
+
+
 <script>
     $(document).ready(e => {
-        $('#records').DataTable();
+        var table =  $('#records').DataTable();
+        console.log( table.rows().data() );
+
+
+        
+
+
         $('#items-select').select2({
             ajax: {
                 url: '{{ route("itemAjax") }}',
@@ -209,6 +223,14 @@
                 },
                 method: "get",
                 success: e => {
+                    $('#codeajax').val( e.code );
+                    $('#descriptionajax').val( e.description );
+                    $('#pnajax').val( e.pn );
+
+                    $('#familyajax').val( e.family );
+                    $('#currencyajax').val( e.currency );
+                    $('#priceajax').val( e.price );
+                    
                     console.log(e.description);
                 },
                 error: e =>{
@@ -218,6 +240,49 @@
             
         } );
 
+
+        $("#addItemBom").click( e=>{
+            
+            if(!$('#items-select').val() ||  $("#quantity-item").val() <= 0){
+                swal('','Check the all fields','error');
+                return;
+            }
+
+            $.ajax({
+                url: '{{ route("addItemToBom") }}',
+                data: {
+                    item_id: $('#items-select').val(),
+                    model_id: {{ $model->id }},
+                    quantity: $("#quantity-item").val()
+
+                },
+                method: "get",
+                success: e => {
+                    
+                    console.log(e);
+                    
+                    
+
+                    table.row.add( [ e.data.code,
+                                     e.data.pn,
+                                     e.data.description,
+                                     e.data.localization,
+                                     e.data.price,
+                                     e.data.leadtime,
+                                     e.response.quantity,
+                                     "---",
+                                     "---",
+                                     "--- "
+                                      ]  ).draw();
+
+                    
+                    console.log(e);
+                },
+                error: e =>{
+                    console.log(e);
+                }
+            })
+        } );
         
 
     });
