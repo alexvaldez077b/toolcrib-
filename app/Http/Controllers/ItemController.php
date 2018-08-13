@@ -110,8 +110,8 @@ class ItemController extends Controller
             });
         
         });
-        echo $result;
-        //return redirect()->back();
+        
+        return redirect()->back();
     }
 
     

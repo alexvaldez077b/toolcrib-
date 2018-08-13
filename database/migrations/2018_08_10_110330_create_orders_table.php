@@ -23,7 +23,7 @@ class CreateOrdersTable extends Migration
             
             $table->unsignedInteger('id_cliente');
             $table->unsignedInteger('id_model');
-
+            $table->unsignedInteger('id_item');
             $table->float('quantity')->default(0);
             $table->float('delivered')->nullable();
             

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 class HomeController extends Controller
 {
     /**
@@ -25,4 +25,22 @@ class HomeController extends Controller
     {
         return view('home');
     }
+
+    public function login(Request $req)
+    {
+        $credentials = $req->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            // Authentication passed...
+            return response()->json([
+                'status' => true,
+            ]);
+        }
+        else{
+            return response()->json([
+                'status' => false,
+            ]);
+        }
+    }
+
 }

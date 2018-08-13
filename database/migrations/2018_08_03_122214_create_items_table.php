@@ -33,7 +33,7 @@ class CreateItemsTable extends Migration
 
             $table->integer('leadtime')->default(15);
 
-            $table->integer('priority')->default(15);
+            $table->integer('priority')->default(0);
 
             $table->boolean('currency')->default(1);
 

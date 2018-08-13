@@ -12,12 +12,14 @@
 */
 
 Route::get('/', function () {
-    return Redirect('home');
+
+    return view('orders.request');
 });
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::post('/users/api/getAuth', 'HomeController@login')->name('getAuth');
 
 
 Route::get('/customers', 'CustomerController@index')->name('customers');
