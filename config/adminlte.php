@@ -150,6 +150,15 @@ return [
             //'label'       => 4,
             'label_color' => 'success',
         ],
+        [
+            'text'        => 'request material',
+            'url'         => 'request',
+            'icon'        => 'inbox',
+            //'label'       => 4,
+            'label_color' => 'success',
+        ],
+
+        
         
         
         /*

@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -123,29 +127,7 @@ class ItemController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function filter(Request $req)
-    {
-        //
-        $items = Item::where('status',true)->where('code',"like","%$req->q%")->orWhere('description',"like","%$req->q%")->get();
-        
-
-
-        $elms = [];
-
-        foreach ($items as $row) {
-            # code...
-            array_push($elms, array( 'id'=> $row->id, 'text' => "$row->code || $row->description" )  );
-
-        }
-
-        return json_encode(array( 'results' => $elms));
-
-    }
-        
-    public function details(Request $req)
-    {
-        return response()->json( Item::where('id',$req->id)->first());
-    }
+    
 
     public function destroy(Item $item)
     {

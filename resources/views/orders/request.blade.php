@@ -96,7 +96,7 @@
             </div>
 
             <div class="box-footer">
-                <button class="btn btn-primary btn-flat">Submit</button>
+                <button id="formSubmit" type="submit" {{ isset(Auth::user()->id)?"":"disabled" }}  class="btn btn-primary btn-flat">Submit</button>
                 <button id="getAuth" class="btn btn-success pull-right  btn-flat">Get Auth</button>
             </div>
             <!-- /.box-body -->
@@ -123,10 +123,29 @@
 
 @stop @section('js')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.26.11/sweetalert2.min.css" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.26.11/sweetalert2.all.js"></script>
+
+<script src="https://js.pusher.com/4.3/pusher.min.js"></script>
+  <script>
+
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('3273122a56d0e8e8e4c3', {
+      cluster: 'mt1',
+      encrypted: true
+    });
+
+    var channel = pusher.subscribe('HOME');
+    channel.bind('request', function(data) {
+      alert(JSON.stringify(data));
+    });
+  </script>
+
 <script>
     //id_auth
-
+    var Auth = null;
     $(document).ready(e => {
         /*
         const toast = swal.mixin({
@@ -163,7 +182,7 @@
 
                         $.ajax({
                             url: "{{ route('getAuth') }}",
-                            method: "POST",
+                            method: "post",
                             data: {
                                 email: result.value,
                                 password: password.value,
@@ -171,7 +190,11 @@
                             },
                             success: response => {
 
+                                Auth = response;
+
                                 if (response.status) {
+
+                                    $("#formSubmit").removeAttr("disabled");
 
                                     const toast = swal.mixin({
                                         toast: true,

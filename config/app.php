@@ -161,6 +161,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         JeroenNoten\LaravelAdminLte\ServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        Pusher\Laravel\PusherServiceProvider::class
 
     ],
 
@@ -211,6 +212,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'Pusher' => Pusher\Laravel\Facades\Pusher::class
 
     ],
 

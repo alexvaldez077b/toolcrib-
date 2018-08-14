@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', function () {
+Route::get('/request', function () {
 
     return view('orders.request');
 });
@@ -37,8 +37,8 @@ Route::get('/items', 'ItemController@index')->name('items');
 Route::get('/items/update', 'ItemController@update')->name('itemUpdate');
 
 Route::post('/items/uploadfile', 'ItemController@upload')->name('itemsFile');
-Route::get('/items/api', 'ItemController@filter')->name('itemAjax');
-Route::get('/items/api/description', 'ItemController@details')->name('item-description');
+Route::get('/items/api', 'HomeController@filter')->name('itemAjax');
+Route::get('/items/api/description', 'HomeController@details')->name('item-description');
 Route::get('/bom/api/add', 'BomController@store')->name('addItemToBom');
 
 
