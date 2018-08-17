@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Pusher\Laravel\Facades\Pusher;
 
 class OrderController extends Controller
 {
@@ -19,7 +21,12 @@ class OrderController extends Controller
     public function index()
     {
         //
-        return view('orders.index');
+        $data =  DB::table('items')
+                ->leftJoin('orders', 'items.id', '=', 'orders.id_item')
+                ->where('orders.status',0)
+                ->get();
+
+        return view('orders.index')->with('orders',$data);
     }
 
     /**
@@ -27,9 +34,15 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function close(Request $req)
     {
         //
+        Order::where('id', $req->id)->update(['delivered' => $req->delivered, 'status' => 1 ]);
+        $order = Order::where('id', $req->id)->first();
+        Pusher::trigger('HOME', 'close-orders', ['order' => $order ]);
+        
+        return response()->json( [ 'status' => true ] );
+
     }
 
     /**

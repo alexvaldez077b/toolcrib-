@@ -61,7 +61,7 @@
                             <td> {{$row->stock}} </td>
                             <td>
                                 <div class="btn-group">
-                                    <a href="{{ route('customerUpdate',1) }}" type="button" class="btn btn-xs btn-primary">
+                                    <a href="{{ route('ItemUpdate',1) }}" type="button" class="btn btn-xs btn-primary">
                                         <i class="fa fa-edit"></i>
                                     </a>
                                     <button type="button" class="btn btn-xs btn-info">
