@@ -35,7 +35,7 @@
                     <label>Part Number</label>
                     <input type="hidden" class="form-control" value="{{ $customerId }}" name="customer_id">
                     <input type="hidden" class="form-control" value="{{ !empty($model)?$model->id:" -1 " }}" name="id">
-                    <input type="text" class="form-control" name="pn" value="{{ !empty($model)?$model->pn:" " }}" required>
+                    <input type="text" class="form-control" name="np" value="{{ !empty($model)?$model->np:" " }}" required>
                 </div>
 
                 <div class="form-group">

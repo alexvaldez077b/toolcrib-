@@ -69,25 +69,12 @@
                     <div class="col-xs-2">
                         <div class="form-group">
                             <label for="">Quantity</label>
-                            <input type="number" step="1" min="1" value="1" id="quantity" class="form-control">
+                            <input type="number" step="1" min="1" id="quantity" class="form-control">
                         </div>
 
                     </div>
                     
                     
-<div class="col-xs-2">
-                        <div class="form-group">
-                            <label for="">Area</label>
-                            <select id="area" class="form-control">
-				<option value="0">Final</option>
-				<option value="1">SMT</option>
-				<option value="2">N/A</option>
-
-
-			    </select>
-                        </div>
-
-                    </div>
                    
                     
 
@@ -137,7 +124,7 @@
             </div>
             <!-- /.box-body -->
             <div class="box-footer text-center">
-                <button id="sendorder"  onclick='submitForm()' class="uppercase btn btn-success">Send</button>
+                <button onclick='submitForm()' class="uppercase btn btn-success">Send</button>
                 <button onclick='remove()' class="uppercase btn btn-danger">Clear</button>
             </div>
             <!-- /.box-footer -->
@@ -159,21 +146,19 @@
             <div class="box-body">
                 <ul id="list-orders" class="products-list product-list-in-box">
                     @foreach($orders as $row)
-		    @if($row->id_auth == Auth::user()->id)
                     <li class="item" id="order-{{ $row->id }}">
                         <div class="product-img">
                             <img src="{{ url('/img/default.png') }}" alt="Product Image">
                         </div>
                         <div class="product-info">
-                            <a href="javascript:void(0)" class="product-title">Order: #{{$row->id}} || {{$row->name}}
-                                <span class="label label-warning pull-right">{{ $row->created_at }}</span>
+                            <a href="javascript:void(0)" class="product-title">Order: #{{$row->id}} || {{$row->code}}
+                                <span class="label label-warning pull-right">{{ $row->quantity }}</span>
                             </a>
                             <span class="product-description">
-                                
+                                {{$row->description}}
                             </span>
                         </div>
                     </li>
-		    @endif
                     <!-- /.item -->
                     @endforeach
                 </ul>
@@ -211,7 +196,6 @@
     // Enable pusher logging - don't include this in production
 
     function submitForm() {
-	    $('#sendorder').attr('disabled' , true);
             if ($('#models').val() && package.length >0 ) {
 
                 $.ajax({
@@ -224,23 +208,16 @@
                         model_id: $('#models').val(),
                         auth: Auth != null ? Auth.user.id : -1,
 
-			area: $("#area").val(),
-
                         name: $("#id_user").val() + " " + $('#name').val(),
                         items: package
                     },
                     success: response => {
                         //clear form
-			setTimeout( ()=>{
-				$("#sendorder").attr('disabled',false);
-			} ,3000);
                         $("#clients").val("");
                         $("#quantity").val("");
                         $("#models").html("");
                         $("#name").val("");
                         $("#items").val("");
-			$("#products").html("");
-			package = null;
                         console.log(response);
 
                     },
@@ -256,7 +233,6 @@
         }
 
     Pusher.logToConsole = true;
-    var currentUser = {{ Auth::user()->id }};
 
     var pusher = new Pusher('3273122a56d0e8e8e4c3', {
         cluster: 'mt1',
@@ -265,7 +241,6 @@
 
     var channel = pusher.subscribe('HOME');
     channel.bind('request', function (data) {
-	if( data.userID == currentUser ){
         $("#list-orders").append(
             `
                     <li class="item" id="order-${data.order.id}">
@@ -273,19 +248,17 @@
                             <img src="{{ url('/img/default.png') }}" alt="Product Image">
                         </div>
                         <div class="product-info">
-                            <a href="javascript:void(0)" class="product-title">Order: #${data.order.id} 
+                            <a href="javascript:void(0)" class="product-title">Order: #${data.order.id} || ${data.item.code}
                                 <span class="label label-warning pull-right">${data.order.quantity}</span>
                             </a>
                             <span class="product-description">
-                           
+                            ${data.item.description}
                             </span>
                         </div>
                     </li>
         `
         //list.splice( list.indexOf('foo'), 1 );
         );
-
-	}
     });
 
     channel.bind('close-orders', function (data) {
@@ -328,7 +301,6 @@
     $(document).ready(e => {
 
         $("#add-item-package").click( (e)=>{
-	     $('#add-item-package').attr('disabled' , true);
             e.preventDefault();
 
             $.ajax({
@@ -339,9 +311,7 @@
                 },
                 method: "get",
                 success: e => {
-		    setTimeout( ()=>{
-		     $('#add-item-package').attr('disabled' , false);
-		    }, 1000  )
+
                     console.log(e)
 
                     package.push( { id: e.id, quantity: $('#quantity').val()  } );
@@ -461,8 +431,6 @@
 
 
         $("#clients").change(e => {
-	    remove()
-
             $.ajax({
                 url: "{{ route('getModelsbyClient') }}",
                 method: "get",
@@ -470,10 +438,7 @@
                     id: $("#clients").val()
                 },
                 success: response => {
-		    
-
                     $("#models").html("");
-		    $('#models').append(`<option value="-1" selected > --- </option>`)
                     response.forEach(elem => {
                         console.log("--------------");
                         $("#models").append(
@@ -587,10 +552,6 @@
         })
 
         $("#models").change(e => {
-		
-remove()
-
-
             $.ajax({
                 url: '{{ route("itemAjax") }}',
 

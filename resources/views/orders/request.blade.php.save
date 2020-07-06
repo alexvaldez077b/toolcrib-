@@ -75,19 +75,6 @@
                     </div>
                     
                     
-<div class="col-xs-2">
-                        <div class="form-group">
-                            <label for="">Area</label>
-                            <select id="area" class="form-control">
-				<option value="0">Final</option>
-				<option value="1">SMT</option>
-				<option value="2">N/A</option>
-
-
-			    </select>
-                        </div>
-
-                    </div>
                    
                     
 
@@ -207,7 +194,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.26.11/sweetalert2.all.js"></script>
 
 <script src="https://js.pusher.com/4.3/pusher.min.js"></script>
-<script>
+$('#sendorder').attr('disabled' , true);<script>
     // Enable pusher logging - don't include this in production
 
     function submitForm() {
@@ -224,16 +211,11 @@
                         model_id: $('#models').val(),
                         auth: Auth != null ? Auth.user.id : -1,
 
-			area: $("#area").val(),
-
                         name: $("#id_user").val() + " " + $('#name').val(),
                         items: package
                     },
                     success: response => {
                         //clear form
-			setTimeout( ()=>{
-				$("#sendorder").attr('disabled',false);
-			} ,3000);
                         $("#clients").val("");
                         $("#quantity").val("");
                         $("#models").html("");
@@ -328,7 +310,6 @@
     $(document).ready(e => {
 
         $("#add-item-package").click( (e)=>{
-	     $('#add-item-package').attr('disabled' , true);
             e.preventDefault();
 
             $.ajax({
@@ -339,9 +320,7 @@
                 },
                 method: "get",
                 success: e => {
-		    setTimeout( ()=>{
-		     $('#add-item-package').attr('disabled' , false);
-		    }, 1000  )
+
                     console.log(e)
 
                     package.push( { id: e.id, quantity: $('#quantity').val()  } );

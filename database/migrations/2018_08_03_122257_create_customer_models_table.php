@@ -18,7 +18,7 @@ class CreateCustomerModelsTable extends Migration
 
             $table->unsignedInteger('customer_id');
             
-            $table->string('pn')->unique();
+            $table->string('np')->unique();
             
             $table->string('family');
             

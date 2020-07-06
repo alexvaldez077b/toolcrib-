@@ -29,10 +29,9 @@
                         <th>ID</th>
                         <th>Name</th>
                         <th>Model</th>
-			<th>Area</th>
                         <th>Customer</th>
                         <th>Created At</th>
-                        
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -46,12 +45,16 @@
                         </th>
                         <td>{{ $row->user }}</td>
                         <td>{{ $row->np }}</td>
-			<td>{{ $row->area==1?"SMT":"FINAL" }} {{ $row->area==2?"NA":"" }} </td>
                         <td>{{ $row->name }} </td>
                         
                         
                         <td>{{ $row->created_at }}</td>
-                        
+                        <td>
+                            <button onclick="closeOrder({{$row->id}})" class="btn btn-xs btn-success">
+                                <i class="fa fa-send"></i>
+                            </button>
+                            
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -116,12 +119,9 @@
             title: `You have a new order pending: #${data.order.id}`
         })
         table.row.add([
-            `<a href="{{ url('orders/view/') }}${data.order.id}" >#${data.order.id}</a>`,
             data.order.name,
-            data.model.np,
-            data.customer.name,
             data.order.created_at,
-            
+            `<button onclick="closeOrder(${data.order.id},${data.order.quantity},$(this).parent('tr'))" class="btn btn-xs btn-success" ><i class="fa fa-send" ></i> </button>`
 
         ]).draw();
 
@@ -156,7 +156,7 @@
             }).then((result) => {
                 if (result.value) {
                     $.ajax( {
-                        url: "{{ url('/orders/close/') }}",
+                        url: "{{ route('closeOrder') }}",
                         method: 'get',
                         data: { id: arg, delivered: val.value },
                         success: response=>{

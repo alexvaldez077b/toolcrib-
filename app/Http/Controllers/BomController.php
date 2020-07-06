@@ -1,10 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Auth;
 use App\Bom;
+ini_set('max_execution_time', 600); //3 minutes
+
 use App\customerModel;
 use App\Item;
+use Excel;
 use Illuminate\Http\Request;
 
 class BomController extends Controller
@@ -20,6 +23,9 @@ class BomController extends Controller
      */
     public function index(Request $request)
     {
+        if(!Auth::user()->can('edit models')){
+            abort(404);
+        }
         //
         $model = customerModel::where('id', $request->id)->first();
 
@@ -49,6 +55,9 @@ class BomController extends Controller
     public function store(Request $request)
     {
         //
+        if(!Auth::user()->can('edit models')){
+            abort(404);
+        }
 
         $bom = Bom::create([ 'model_id' => $request->model_id, 'item_id' => $request->item_id, 'quantity' => $request->quantity   ]);
         $item = Item::where('id', $request->item_id)->first();
@@ -76,9 +85,42 @@ class BomController extends Controller
      * @param  \App\Bom  $bom
      * @return \Illuminate\Http\Response
      */
-    public function edit(Bom $bom)
+    public function uploadBoom(Request $request)
     {
-        //
+        if(!Auth::user()->can('edit models')){
+            abort(404);
+        }
+
+        $in = 0;
+        Excel::load($request->csv, function($reader) {
+ 
+            $excel = $reader->get();
+     
+            // iteracción
+            $reader->each(function($row) {
+
+                
+
+                $idmodel = CustomerModel::where('np',$row->model)->first();
+                $iditem = item::where('code','like',"%$row->item%")->first();
+
+                
+
+                try{
+                    if( $idmodel && $iditem ){
+                        
+                        
+                        $bom = Bom::create([ 'model_id' => $idmodel->id, 'item_id' => $iditem->id, 'quantity' => $row->quantity   ]);
+                        echo "INSER: [ ",$iditem->code, ",", $idmodel->np,"] OK <br>";
+                        echo $in . " Add items";
+                        $in++;
+                    }
+                }
+                catch( \Exception $e ){
+                    echo "INSER: [ ",$row->item, ",", $row->model,"] Fail <br>";
+                }
+            });
+        });
     }
 
     /**
@@ -88,9 +130,19 @@ class BomController extends Controller
      * @param  \App\Bom  $bom
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Bom $bom)
+    public function update(Request $request)
     {
+        if(!Auth::user()->can('edit models')){
+            abort(404);
+        }
         //
+        Bom::where('model_id',$request->modelid)
+                  ->where('item_id',$request->itemid)
+                  ->update( ['quantity' => $request->quantity] );  
+
+        return response()->json( [ 'status' => 200 ] );
+
+
     }
 
     /**
@@ -99,8 +151,16 @@ class BomController extends Controller
      * @param  \App\Bom  $bom
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Bom $bom)
+    public function destroy(Request $request)
     {
+        if(!Auth::user()->can('edit models')){
+            abort(404);
+        }
         //
+        Bom::where('model_id',$request->modelid)
+                  ->where('item_id',$request->itemid)
+                  ->delete();
+        return response()->json( [ 'status' => 200 ] );
+
     }
 }

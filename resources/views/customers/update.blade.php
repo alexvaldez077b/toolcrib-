@@ -12,6 +12,19 @@
 </ol>
 @stop @section('content')
 
+<div class="col-md-12">
+
+@if($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
+</div>
 
 <div class="col col-md-6">
 
@@ -26,7 +39,7 @@
     
 
         <!-- form start -->
-        <form role="form" method="post" action="{{ route('customer_Update') }}" >
+        <form role="form" method="post" action="{{ route('customer_Update') }}" enctype="multipart/form-data">
             <div class="box-body">
                 <div class="form-group">
 
@@ -59,11 +72,11 @@
             </div>
         </form>
 
-        //
+        
 
         @else
 
-        <form role="form" method="post" action="{{ route('customer_Update') }}" >
+        <form role="form" method="post" action="{{ route('customer_Update') }}"  enctype="multipart/form-data">
             <div class="box-body">
                 <div class="form-group">
 
@@ -111,7 +124,7 @@
     <!-- Profile Image -->
     <div class="box box-primary">
         <div class="box-body box-profile">
-            <img class="profile-user-img img-responsive" src="{{ url('/img/default.png') }}" alt=" picture">
+        <img class="img-responsive" height="200" width="200"  @if(isset($customer->image)) src="{{ URL::asset("../storage/app/public/$customer->image") }}" @else src="{{ url('/img/default.png') }}" @endif alt="picture">
 
             <h3 class="profile-username text-center">customer Name</h3>
             

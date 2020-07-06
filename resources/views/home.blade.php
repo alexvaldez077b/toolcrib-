@@ -4,6 +4,12 @@
     <small>Version 2.0</small>
 </h1>
 <ol class="breadcrumb">
+     @role('Admin')
+     <li>
+        {{Auth::user()->roles->first()->name}}
+    </li>
+    @endrole
+     
     <li>
         <a href="#">
             <i class="fa fa-dashboard"></i> Home</a>
@@ -15,12 +21,12 @@
     <div class="col-md-3 col-sm-6 col-xs-12">
         <div class="info-box">
             <span class="info-box-icon bg-aqua">
-                <i class="ion ion-ios-gear-outline"></i>
+                <i class="fa fa-users"></i>
             </span>
 
             <div class="info-box-content">
                 <span class="info-box-text">Customers</span>
-                    <small></small>
+                <span class="info-box-number">{{$customers}}</span>
                 </span>
             </div>
             <!-- /.info-box-content -->
@@ -31,12 +37,12 @@
     <div class="col-md-3 col-sm-6 col-xs-12">
         <div class="info-box">
             <span class="info-box-icon bg-red">
-                <i class="fa fa-google-plus"></i>
+                <i class="fa fa-cogs"></i>
             </span>
 
             <div class="info-box-content">
                 <span class="info-box-text">Models</span>
-                <span class="info-box-number">X</span>
+                <span class="info-box-number">{{$models}}</span>
             </div>
             <!-- /.info-box-content -->
         </div>
@@ -50,12 +56,12 @@
     <div class="col-md-3 col-sm-6 col-xs-12">
         <div class="info-box">
             <span class="info-box-icon bg-green">
-                <i class="ion ion-ios-cart-outline"></i>
+                <i class="fa fa-sitemap"></i>
             </span>
 
             <div class="info-box-content">
                 <span class="info-box-text">Items</span>
-                <span class="info-box-number">X</span>
+                <span class="info-box-number">{{$items}}</span>
             </div>
             <!-- /.info-box-content -->
         </div>
@@ -63,17 +69,19 @@
     </div>
     <!-- /.col -->
     <div class="col-md-3 col-sm-6 col-xs-12">
+        <a href="{{route('itemReport')}}" >
         <div class="info-box">
             <span class="info-box-icon bg-yellow">
-                <i class="ion ion-ios-people-outline"></i>
+                <i class="fa fa-line-chart"></i>
             </span>
 
             <div class="info-box-content">
-                <span class="info-box-text">Users</span>
-                <span class="info-box-number">X</span>
+                <span class="info-box-text">Expense forecast</span>
+                <span class="info-box-number"></span>
             </div>
             <!-- /.info-box-content -->
         </div>
+        </a>
         <!-- /.info-box -->
     </div>
     <!-- /.col -->

@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Auth;
 use App\Customer;
 use Illuminate\Http\Request;
+use App\customerModel;
+use Validator;
 
 class CustomerController extends Controller
 {
@@ -18,6 +20,9 @@ class CustomerController extends Controller
      */
     public function index()
     {
+        if(!Auth::user()->can('edit customer')){
+            abort(404);
+        }
         $customers = Customer::All();
         return view('customers.index')->with('items',$customers);
     }
@@ -62,14 +67,51 @@ class CustomerController extends Controller
      */
     public function edit(Customer $customer, Request $request )
     {
+        if(!Auth::user()->can('edit customer')){
+            abort(404);
+        }
         /*  updateOrCreate( [data],[where]);    */
+
+        $fileName = "";
+
+
+            $validator = Validator::make($request->all(), [
+                'image' => 'required|file|max:1024',
+            ]);
+                
+            
+
+            
+            if(!$validator->fails()){
+
+                $fileName = $request->code.time().'.'.request()->image->getClientOriginalExtension();
+        
+                $request->image->storeAs('public',$fileName);
+            
+            }else{
+                $fileName = "";
+            }
 
         if($request->id == -1)
         {
-            Customer::create( [ 'name'=> $request->name ] );
+            Customer::create( [ 'name'=> $request->name, 'image' => $fileName!=""?$fileName:null ] );
         }else{
-            Customer::where( ['id' => $request->id ])->update( [ 'name'=> $request->name, 'status' => $request->status ] );
+            
+            
+            
+            $temp = Customer::where('id',$request->id)->first();
+
+            
+            Customer::where( ['id' => $request->id ])->update( [ 'name'=> $request->name, 'image' => $fileName!=""?$fileName:$temp->image , 'status' => $request->status ] );
+            customerModel::where('customer_id',$request->id )->update( [ 'status' => $request->status ] );
+
+            //call all models and edit
+
+            
+
+
         }
+
         return Redirect('customers');
 
     }
@@ -83,6 +125,9 @@ class CustomerController extends Controller
      */
     public function update(Request $request, Customer $customer)
     {
+        if(!Auth::user()->can('edit customer')){
+            abort(404);
+        }
         //
         
         $item = Customer::where( 'id', $request->id )->first();

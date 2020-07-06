@@ -72,7 +72,7 @@ return [
     |
     */
 
-    'collapse_sidebar' => false,
+    'collapse_sidebar' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -108,54 +108,70 @@ return [
     |
     */
 
+    /*
+     'edit items']);
+     'edit users']);
+     'edit models']);
+     'edit customer']);
+     'auth orders']);
+     'create orders']);
+     'edit orders']);
+    */
+
     'menu' => [
         'MAIN NAVIGATION',
         [
             'text' => 'Users',
-            'url'  => 'admin/users',
-            'can'  => 'edit-user',
+            'url'  => 'profiles',
+            'can'  => 'edit users',
+            'icon' => 'users'
         ],
         [
             'text'        => 'Dashboard',
             'url'         => 'home',
             'icon'        => 'home',
+            
             //'label'       => 4,
-            'label_color' => 'success',
+            
         ],
         [
             'text'        => 'Customers',
             'url'         => 'customers',
             'icon'        => 'industry',
+            'can'         => 'edit customer',
             //'label'       => 4,
-            'label_color' => 'success',
+            
         ],
         [
             'text'        => 'Items',
             'url'         => 'items',
             'icon'        => 'th-list',
+            'can'         => 'edit items',
             //'label'       => 4,
-            'label_color' => 'success',
+            
         ],
         [
             'text'        => 'Orders',
             'url'         => 'orders',
             'icon'        => 'bell',
+            'can'         => 'edit orders'
             //'label'       => 4,
-            'label_color' => 'success',
-        ],
-        [
-            'text'        => 'Graph',
-            'url'         => 'orders',
-            'icon'        => 'signal',
-            //'label'       => 4,
-            'label_color' => 'success',
+            
         ],
         [
             'text'        => 'request material',
             'url'         => 'request',
             'icon'        => 'inbox',
+            'can'         => 'create orders',
             //'label'       => 4,
-            'label_color' => 'success',
+            
+        ],
+        [
+            'text'        => 'History',
+            'url'         => 'history/orders',
+            'icon'        => 'history',
+            //'label'       => 4,
+            
         ],
 
         

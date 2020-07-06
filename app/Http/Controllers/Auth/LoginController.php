@@ -36,4 +36,14 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+    
+    /**
+     * Handle an authentication attempt.
+     *
+     * @param  \Illuminate\Http\Request $request
+     *
+     * @return Response
+     */
+
+
 }
